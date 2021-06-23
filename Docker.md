@@ -125,11 +125,13 @@ Docker利用容器技术，独立运行一个或一组应用，容器由镜像�
 
 1. 官网安装参考手册：https://docs.docker.com/engine/install/centos/
 
-2. 确定你是CentOS7及以上版本
+2. 确定你是CentOS7及以上版本，系统内核是 3.10 以上
 
     ```
-    [root@192 Desktop]# cat /etc/redhat-release
-    CentOS Linux release 7.2.1511 (Core)
+    [root@centos7 ~]# cat /etc/redhat-release
+    CentOS Linux release 7.9.2009 (Core)
+    [root@centos7 ~]# uname -r
+    3.10.0-1127.19.1.el7.x86_64
     ```
 
 3. yum安装gcc相关
@@ -160,26 +162,20 @@ Docker利用容器技术，独立运行一个或一组应用，容器由镜像�
     yum install -y yum-utils device-mapper-persistent-data lvm2
     ```
 
-6. 设置stable镜像仓库
+6. 设置镜像仓库
 
     ```
-    # 错误
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    ## 报错
-    [Errno 14] curl#35 - TCP connection reset by peer
-    [Errno 12] curl#35 - Timeout
-    
     # 正确推荐使用国内的
     yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
     ```
 
-7. 更新yum软件包索引
+7. 更新yum软件包索引（因为上面更新了yum源）
 
     ```
     yum makecache fast
     ```
 
-8. 安装Docker CE
+8. 安装Docker CE （C E表示Community Edition）
 
     ```
     yum -y install docker-ce docker-ce-cli containerd.io
@@ -193,11 +189,71 @@ Docker利用容器技术，独立运行一个或一组应用，容器由镜像�
 
 10. 测试
 
-    ```
+    ```shell
     docker version
-    docker run hello-world
-    docker images
+    docker run hello-world #使用镜像
+    docker images #查看已下载的镜像
+    #--------------------------------------------------
+    
+    [root@centos7 ~] docker run hello-world
+    Unable to find image 'hello-world:latest' locally
+    latest: Pulling from library/hello-world
+    b8dfde127a29: Pull complete
+    Digest: sha256:9f6ad537c5132bcce57f7a0a20e317228d382c3cd61edae14650eec68b2b345c
+    Status: Downloaded newer image for hello-world:latest
+    
+    Hello from Docker!
+    This message shows that your installation appears to be working correctly.
+    
+    To generate this message, Docker took the following steps:
+     1. The Docker client contacted the Docker daemon.
+     2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+        (amd64)
+     3. The Docker daemon created a new container from that image which runs the
+        executable that produces the output you are currently reading.
+     4. The Docker daemon streamed that output to the Docker client, which sent it
+        to your terminal.
+    
+    To try something more ambitious, you can run an Ubuntu container with:
+     $ docker run -it ubuntu bash
+    
+    Share images, automate workflows, and more with a free Docker ID:
+     https://hub.docker.com/
+    
+    For more examples and ideas, visit:
+     https://docs.docker.com/get-started/
+    
+    #--------------------------------------------------
+    
+    root@centos7 ~] docker images
+    REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+    hello-world   latest    d1165f221234   3 months ago   13.3kB
     ```
+
+11. 卸载Docker
+    ```shell
+    #卸载依赖
+    sudo yum remove docker-ce docker-ce-cli containerd.io
+    #删除资源
+    rm -rf /var/lib/docker
+    rm -rf /var/lib/containerd
+    ```
+
+
+
+# Docker 镜像加速
+
+阿里云和腾讯云都有 docker 镜像加速服务
+
+[腾讯云Docker文档](https://cloud.tencent.com/document/product/1207/45596?from=information.detail.%E8%85%BE%E8%AE%AF%E4%BA%91%E5%8A%A0%E9%80%9Fdocker)
+
+
+
+# 回顾HelloWorld
+
+![image-20210624004617874](Docker.assets/image-20210624004617874.png)
+
+
 
 
 
