@@ -2,7 +2,11 @@
 
 
 
-# Docker为什么出现？
+
+
+# Docker 概述
+
+## Docker为什么出现？
 
 一款产品开发、线上至少有两套环境，每一台机器都要配置环境，费时费力，并且有一些配置时不跨平台的。
 
@@ -14,7 +18,7 @@ Docker的思想打包装箱，互相隔离。通过隔离机制，将服务器�
 
 
 
-# Docker历史
+## Docker历史
 
 2010 公司成立
 
@@ -34,7 +38,7 @@ https://hub.docker.com/ Docker镜像仓库，有 push 和 pull 操作
 
 
 
-# Docker对比
+## Docker对比
 
 | Feature        | Vwware虚拟机软件 | Docker     |
 | -------------- | ---------------- | ---------- |
@@ -57,7 +61,7 @@ https://hub.docker.com/ Docker镜像仓库，有 push 和 pull 操作
 
 
 
-# Docker用途
+## Docker用途
 
 > DevOps（两个单词组合    开发、运维）
 
@@ -89,7 +93,7 @@ Docker 是内核级别的虚拟化，可以在一个物理机上运行很多的�
 
 
 
-# Docker名词
+## Docker名词
 
 1. 镜像：Images，相当于 Java 的类
 
@@ -241,7 +245,7 @@ Docker利用容器技术，独立运行一个或一组应用，容器由镜像�
 
 
 
-# Docker 镜像加速
+## Docker 镜像加速
 
 阿里云和腾讯云都有 docker 镜像加速服务
 
@@ -249,9 +253,255 @@ Docker利用容器技术，独立运行一个或一组应用，容器由镜像�
 
 
 
-# 回顾HelloWorld
+## 回顾HelloWorld
 
 ![image-20210624004617874](Docker.assets/image-20210624004617874.png)
+
+
+
+
+
+## 底层原理
+
+Docker 是 C/S 架构
+
+![image-20210624085803051](Docker.assets/image-20210624085803051.png)	
+
+
+
+
+
+**Docker 为什么比 VM 快？**
+
+![image-20210624090255157](Docker.assets/image-20210624090255157.png)	
+
+* Docker 有着比虚拟机更少的抽象层
+* 容器是运行在 Docker 服务上的
+* Docker 利用宿主机的内核，VM 需要完整的操作系统。所以，新建一个容器的时候，Docker 不需要向虚拟机一样重新加载一个操作系统内核。
+
+
+
+
+
+
+
+# Docker常用命令
+
+## 帮助命令
+
+```shell
+docker version
+docker info
+docker 命令 --help
+```
+
+帮助文档地址 https://docs.docker.com/reference/
+
+
+
+
+
+## 镜像命令
+
+**docker search 查询镜像**
+
+```shell
+[root@centos7 ~] docker search mysql --filter=stars=3000
+NAME      DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+mysql     MySQL is a widely used, open-source relation…   11034     [OK]
+mariadb   MariaDB Server is a high performing open sou…   4181      [OK]
+```
+
+
+
+**docker pull 下载镜像**
+
+```shell
+[root@centos7 ~] docker pull mysql:5.7.34   # 指定tag（版本），默认 latest
+5.7.34: Pulling from library/mysql
+b4d181a07f80: Pull complete
+a462b60610f5: Pull complete        			# 分层下载，docker image 核心，联合文件系统
+578fafb77ab8: Pull complete
+524046006037: Pull complete
+d0cbe54c8855: Pull complete
+aa18e05cc46d: Pull complete
+32ca814c833f: Pull complete
+52645b4af634: Pull complete
+bca6a5b14385: Pull complete
+309f36297c75: Pull complete
+7d75cacde0f8: Pull complete
+Digest: sha256:1a2f9cd257e75cc80e9118b303d1648366bc2049101449bf2c8d82b022ea86b7
+Status: Downloaded newer image for mysql:5.7.34
+docker.io/library/mysql:5.7.34       # 存放地址
+```
+
+
+
+**docker images 查看本地镜像**
+
+
+
+**docker rmi 删除镜像**
+
+```shel
+docker rmi -f 镜像id 镜像id 镜像id
+docker rmi -f $(docker images -aq)   #删除全部容器
+```
+
+
+
+
+
+## 容器命令
+
+我们先有镜像才可以创建容器
+
+**下载一个 centos 镜像来测试学习**
+
+```shell
+[root@centos7 ~] docker pull centos:centos7
+centos7: Pulling from library/centos
+2d473b07cdd5: Pull complete
+Digest: sha256:0f4ec88e21daf75124b8a9e5ca03c37a5e937e0e108a255d890492430789b60e
+Status: Downloaded newer image for centos:centos7
+docker.io/library/centos:centos7
+```
+
+
+
+**新建容器并启动**
+
+```shell
+docker run [可选参数] image
+
+# 参数说明
+--name="" 		容器名字
+-d 				后台方式运行
+-it				交互方式运行
+-p				指定容器端口
+-P				随机容器端口
+
+# 测试：启动并进入、退出
+[root@centos7 ~] docker run -it centos:centos7 /bin/bash
+[root@c044bf9b21ba /] ls
+anaconda-post.log  bin  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@c044bf9b21ba /] exit
+```
+
+
+
+**列出所有运行容器**
+
+```shell
+docker ps [可选参数]
+
+-a 	正在运行+历史运行
+-n	显示最近的n个
+-q	仅显示容器ID
+
+[root@centos7 ~] docker ps -n=1 -aq
+c044bf9b21ba
+```
+
+
+
+**退出容器**
+
+```shexx
+exit  			#退出且停止容器
+ctrl + p + q    #退出不停止
+```
+
+
+
+**删除容器**
+
+```shell
+docker rm 容器id 容器id 容器id
+docker rm -f $(docker ps -aq)   #删除所有容器
+```
+
+
+
+启停容器
+
+```shell
+docker start 容器id
+docker restart 容器id
+docker stop 容器id
+docker kill 容器id
+```
+
+
+
+
+
+## 其他命令
+
+**后台启动**
+
+==注意：==容器使用后台运行，必须要有一个前台进程，否则会立刻停止
+
+```shell
+docker run -d 镜像
+
+#测试，加入一段脚本，让后台容器持续运行
+docker run -d centos:centos7 /bin/bash -c "while true; do echo message; sleep 1;done;"
+```
+
+
+
+**查看日志**
+
+```shell
+docker ps 获取容器ID
+
+docker logs -ft --tail number  容器ID
+```
+
+
+
+**查看容器中进程信息**
+
+```shell
+docker top 容器ID
+```
+
+
+
+**查看容器数据**
+
+```shell
+docker inspect 容器ID
+```
+
+
+
+**进入当前正在运行的容器**
+
+```shell
+# 进入容器后，开启一个新的终端（常用）
+docker exec -it 容器ID /bin/bash
+
+# 进入容器后，不会启动新的进程
+docker attach 容器ID
+```
+
+
+
+**从容器拷贝文件到主机（手动方式）**
+
+```shell
+docker cp 容器ID:容器路径 主机路径
+```
+
+
+
+
+
+
+
+
 
 
 
