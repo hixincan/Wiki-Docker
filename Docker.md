@@ -379,11 +379,12 @@ docker.io/library/centos:centos7
 docker run [可选参数] image
 
 # 参数说明
---name="" 		容器名字
--d 				后台方式运行
--it				交互方式运行
--p				指定容器端口
--P				随机容器端口
+--name="" 				容器名字
+-d 						后台方式运行
+-it						交互方式运行
+-p 主机端口:容器端口	   端口映射
+-P						随机容器端口
+-v 主机目录:容器目录	   m
 
 # 启动并进入，增加bash，进入编辑状态
 [root@centos7 ~] docker run -it centos:centos7 /bin/bash
