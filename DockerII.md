@@ -376,8 +376,6 @@ ENV					# env:构建的时候设置环境变量！
 
 ## 实战测试
 
-
-
 > 创建一个 centos，包含 jdk、tomcat 的镜像
 
 ```shell
@@ -480,8 +478,9 @@ IMAGE          CREATED        CREATED BY                                      SI
 
 准备tomcat 和 jdk 到当前目录，编写好README
 
-```shell
-```
+
+
+TODO
 
 
 
@@ -491,9 +490,9 @@ IMAGE          CREATED        CREATED BY                                      SI
 
 
 
+## 发布自己的镜像
 
-
-
+TODO
 
 
 

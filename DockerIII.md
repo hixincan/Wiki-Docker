@@ -400,35 +400,80 @@ OK
 
 1、构建SpringBoot项目
 
+![image-20210625143623300](DockerIII.assets/image-20210625143623300.png)	
+
+http://localhost:8080/hello
+
+
+
 2、打包运行
 
+mvn package 打包
+
+<img src="DockerIII.assets/image-20210625143748110.png" alt="image-20210625143748110" style="zoom: 67%;" />	
+
+
+
+<img src="DockerIII.assets/image-20210625143824425.png" alt="image-20210625143824425" style="zoom:80%;" />	
+
+
+
+运行，java -jar jar包
+
+
+
+3、编写Dockerfile（默认文件命名）
+
+IDEA 安装 docker 插件，语法高亮
+
+<img src="DockerIII.assets/image-20210625144825043.png" alt="image-20210625144825043" style="zoom:80%;" />	
+
+
+
+4、上传文件到服务器
+
+新建测试目录，/home/idea
+
 ```shell
-mvn package
+[root@centos7 idea]# ls -hl
+total 17M
+-rw-r--r-- 1 root root 17M Jun 25 14:51 demo-0.0.1-SNAPSHOT.jar
+-rw-r--r-- 1 root root 120 Jun 25 14:51 Dockerfile
 ```
 
-3、编写dockerfile
+
+
+5、构建镜像
+
+docker 会自动找 Dockerfile 命名的构建文件
 
 ```shell
-FROM java:8
-COPY *.jar /app.jar
-CMD ["--server.port=8080"]
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
-```
-
-4、构建镜像
-
-1. 复制jar和DockerFIle到服务器
-
-2. 构建镜像
-
-```shell
-docker build -t xxxxx:xx  .
+docker build -t springbootdemo:1.0  .
 ```
 
 
 
 5、发布运行
+
+```shell
+[root@centos7 idea] docker run -d -P --name springbootdemo01 b5a3591d59ca
+```
+
+
+
+6、测试
+
+```shell
+[root@centos7 idea] docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS              PORTS                                         NAMES
+9098df72eb75   b5a3591d59ca   "java -jar /app.jar …"   About a minute ago   Up About a minute   0.0.0.0:49154->8080/tcp, :::49154->8080/tcp   springbootdemo01
+[root@centos7 idea] curl localhost:49154
+{"timestamp":"2021-06-25T06:59:02.995+00:00","status":404,"error":"Not Found","path":"/"}[root@centos7 idea]#
+[root@centos7 idea] curl localhost:49154/hello
+hello, spring boot
+```
+
+
 
 以后我们使用了Docker之后，给别人交付就是一个镜像即可！
 
@@ -437,7 +482,7 @@ docker build -t xxxxx:xx  .
 
 # 企业实战
 
-
+管理多个容器
 
 
 
