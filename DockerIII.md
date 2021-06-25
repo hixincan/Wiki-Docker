@@ -479,16 +479,93 @@ hello, spring boot
 
 
 
-
-# 企业实战
-
-管理多个容器
-
-
-
-
-
 # Docker Compose
+
+官方文档地址：https://docs.docker.com/compose/
+
+轻松高效地管理多个容器，局限于仅单机管理。
+
+
+
+使用步骤概述 TODO
+
+1. 定义 Dockerfile：构建业务应用镜像
+2. 定义 docker-compose.yml ：管理所有的==服务==（容器），包括业务应用和应用的依赖（一些中间件）
+3. 运行 docker compose up
+
+
+
+## 安装
+
+Docker Compose 是 Docker 的开源项目，需要单独安装，官方地址 https://docs.docker.com/compose/install/
+
+1、下载二进制文件 /usr/local/bin/docker-compse 到 /usr/local/bin 下，即可全局访问
+
+```shell
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+
+
+2、授权，可执行
+
+```shell
+sudo chmod +x /usr/local/bin/docker-compose
+
+[root@centos7 tmp] docker-compose version
+docker-compose version 1.29.2, build 5becea4c
+docker-py version: 5.0.0
+CPython version: 3.7.10
+OpenSSL version: OpenSSL 1.1.0l  10 Sep 2019
+```
+
+
+
+3、使用示例
+
+参考官方（跑不通）：https://docs.docker.com/compose/gettingstarted/
+
+TODO 自行写一个 Java 的示例
+
+
+
+## YAML规则
+
+官方文档地址：https://docs.docker.com/compose/compose-file/compose-file-v3/
+
+3 层配置
+
+```shell
+version: # 与 docker 版本对应
+services: 
+其他配置（可选）
+```
+
+
+
+
+
+## 实战：开源项目
+
+
+
+**博客**
+
+*没有 docker compose 的情况下，要考虑很多环境依赖*
+
+参考官方地址：https://docs.docker.com/samples/wordpress/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -498,7 +575,7 @@ hello, spring boot
 
 # Docker Swarm
 
-
+集群管理容器，具有扩缩容的功能
 
 
 
@@ -506,3 +583,28 @@ hello, spring boot
 
 # CI/CD Jenkis
 
+TODO
+
+
+
+
+
+# Docker Stack
+
+
+
+
+
+# Docker Secret
+
+
+
+
+
+# Docker Config
+
+
+
+# K8S
+
+容器编排
